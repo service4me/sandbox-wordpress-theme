@@ -1,0 +1,464 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Sandbox\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-07-19 00:00-0500\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Björn von Prollius <bjoern@prollius.de>\n"
+"Language-Team: Scott Allan Wallick <s@scottwallick.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED STATES\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: \n"
+
+#: 404.php:7
+msgid "Not Found"
+msgstr "Nicht gefunden"
+
+#: 404.php:9
+msgid "Apologies, but we were unable to find what you were looking for. Perhaps  searching will help."
+msgstr "Entschuldigung, aber wir konnten nicht finden, wonach Sie gesucht haben. Bitte benutzen Sie die Suche."
+
+#: 404.php:14
+#: functions.php:362
+#: search.php:56
+#: sidebar.php:39
+msgid "Find"
+msgstr "Suchen"
+
+#: archive.php:9
+#, php-format
+msgid "Daily Archives: <span>%s</span>"
+msgstr "Tages-Archiv: <span>%s</span>"
+
+#: archive.php:11
+#, php-format
+msgid "Monthly Archives: <span>%s</span>"
+msgstr "Monats-Archiv: <span>%s</span>"
+
+#: archive.php:13
+#, php-format
+msgid "Yearly Archives: <span>%s</span>"
+msgstr "Jahres-Archiv: <span>%s</span>"
+
+#: archive.php:15
+msgid "Blog Archives"
+msgstr "Blog-Archiv"
+
+#: archive.php:21
+#: archive.php:48
+#: author.php:12
+#: author.php:39
+#: category.php:11
+#: category.php:40
+#: index.php:7
+#: index.php:37
+msgid "<span class=\"meta-nav\">&laquo;</span> Older posts"
+msgstr "<span class=\"meta-nav\">&laquo;</span> Ältere Beiträge"
+
+#: archive.php:22
+#: archive.php:49
+#: author.php:13
+#: author.php:40
+#: category.php:12
+#: category.php:41
+#: index.php:8
+#: index.php:38
+msgid "Newer posts <span class=\"meta-nav\">&raquo;</span>"
+msgstr "Neuere Beiträge <span class=\"meta-nav\">&raquo;</span>"
+
+#: archive.php:28
+#: author.php:21
+#: category.php:18
+#: index.php:14
+#: search.php:18
+#, php-format
+msgid "Permalink to %s"
+msgstr "Permalink zu %s"
+
+#: archive.php:29
+#: author.php:22
+#: category.php:19
+#: index.php:15
+#: search.php:19
+#, php-format
+msgid "%1$s &#8211; %2$s"
+msgstr "%1$s &#8211; %2$s"
+
+#: archive.php:31
+#: author.php:24
+#: category.php:21
+#: index.php:17
+#: search.php:21
+msgid "Read More <span class=\"meta-nav\">&raquo;</span>"
+msgstr "Weiterlesen <span class=\"meta-nav\">&raquo;</span>"
+
+#: archive.php:35
+#: category.php:25
+#: index.php:22
+#: search.php:27
+#, php-format
+msgid "By %s"
+msgstr "Geschrieben von %s"
+
+#: archive.php:35
+#: attachment.php:20
+#: category.php:25
+#: image.php:21
+#: index.php:22
+#: search.php:27
+#, php-format
+msgid "View all posts by %s"
+msgstr "Alle Beiträge von %s ansehen"
+
+#: archive.php:37
+#: author.php:28
+#: index.php:24
+#: search.php:29
+#, php-format
+msgid "Posted in %s"
+msgstr "Veröffentlicht in %s"
+
+#: archive.php:39
+#: author.php:30
+#: category.php:31
+#: index.php:26
+#: search.php:31
+msgid "<span class=\"tag-links\">Tagged "
+msgstr "<span class=\"tag-links\">Getaggt als "
+
+#: archive.php:40
+#: archives.php:32
+#: attachment.php:38
+#: author.php:31
+#: category.php:32
+#: comments.php:40
+#: comments.php:66
+#: image.php:39
+#: index.php:27
+#: links.php:22
+#: page.php:15
+#: search.php:32
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: archive.php:41
+#: author.php:32
+#: category.php:33
+#: index.php:28
+#: search.php:33
+msgid "Comments (0)"
+msgstr "Kommentare (0)"
+
+#: archive.php:41
+#: author.php:32
+#: category.php:33
+#: index.php:28
+#: search.php:33
+msgid "Comments (1)"
+msgstr "Kommentare (1)"
+
+#: archive.php:41
+#: author.php:32
+#: category.php:33
+#: index.php:28
+#: search.php:33
+msgid "Comments (%)"
+msgstr "Kommentare (%)"
+
+#: archives.php:20
+msgid "Archives by Category"
+msgstr "Kategorie-Archiv"
+
+#: archives.php:26
+msgid "Archives by Month"
+msgstr "Monats-Archiv"
+
+#: attachment.php:8
+#: image.php:8
+#, php-format
+msgid "Return to %s"
+msgstr "Zurück zu %s"
+
+#: attachment.php:19
+#: image.php:20
+#, php-format
+msgid "Posted by %1$s on <abbr class=\"published\" title=\"%2$sT%3$s\">%4$s at %5$s</abbr>. Bookmark the <a href=\"%6$s\" title=\"Permalink to %7$s\" rel=\"bookmark\">permalink</a>. Follow any comments here with the <a href=\"%8$s\" title=\"Comments RSS to %7$s\" rel=\"alternate\" type=\"application/rss+xml\">RSS feed for this post</a>."
+msgstr "Veröffentlicht von %1$s am <abbr class=\"published\" title=\"%2$sT%3$s\">%4$s um %5$s</abbr>. Benutzen Sie den <a href=\"%6$s\" title=\"Permalink zu %7$s\" rel=\"bookmark\">Permalink</a> als Lesezeichen. Verfolgen Sie die  Kommentare mit dem <a href=\"%8$s\" title=\"RSS für Kommentare zu %7$s\" rel=\"alternate\" type=\"application/rss+xml\">RSS-Feed für diesen Beitrag</a>."
+
+#: attachment.php:30
+#: image.php:31
+#, php-format
+msgid "<a class=\"comment-link\" href=\"#respond\" title=\"Post a comment\">Post a comment</a> or leave a trackback: <a class=\"trackback-link\" href=\"%s\" title=\"Trackback URL for your post\" rel=\"trackback\">Trackback URL</a>."
+msgstr "<a class=\"comment-link\" href=\"#respond\" title=\"Einen Kommentar schreiben\">Schreiben Sie einen Kommentar</a> oder senden Sie einen Trackback: <a class=\"trackback-link\" href=\"%s\" title=\"Trackback-URL für Ihren Beitrag\" rel=\"trackback\">Trackback-URL</a>."
+
+#: attachment.php:32
+#: image.php:33
+#, php-format
+msgid "Comments are closed, but you can leave a trackback: <a class=\"trackback-link\" href=\"%s\" title=\"Trackback URL for your post\" rel=\"trackback\">Trackback URL</a>."
+msgstr "Kommentare sind deaktiviert, aber Sie können einen Trackback senden: <a class=\"trackback-link\" href=\"%s\" title=\"Trackback-URL für Ihren Beitrag\" rel=\"trackback\">Trackback-URL</a>."
+
+#: attachment.php:34
+#: image.php:35
+msgid "Trackbacks are closed, but you can <a class=\"comment-link\" href=\"#respond\" title=\"Post a comment\">post a comment</a>."
+msgstr "Trackbacks sind deaktiviert, aber Sie können <a class=\"comment-link\" href=\"#respond\" title=\"Kommentar veröffentlichen\">einen Kommentar schreiben</a>."
+
+#: attachment.php:36
+#: image.php:37
+msgid "Both comments and trackbacks are currently closed."
+msgstr "Kommentare und Trackbacks sind zur Zeit deaktiviert."
+
+#: author.php:8
+#, php-format
+msgid "Author Archives: <span class=\"vcard\">%s</span>"
+msgstr "Autoren-Archiv: <span class=\"vcard\">%s</span>"
+
+#: category.php:6
+msgid "Category Archives:"
+msgstr "Kategorie-Archiv:"
+
+#: category.php:28
+#, php-format
+msgid "Also posted in %s"
+msgstr "Auch in %s veröffentlicht"
+
+#: comments.php:10
+msgid "This post is protected. Enter the password to view any comments."
+msgstr "Dieser Beitrag ist geschützt. Geben Sie das Passwort ein, um Kommentare zu sehen."
+
+#: comments.php:29
+#, php-format
+msgid "<span>%d</span> Comments"
+msgstr "<span>%d</span> Kommentare"
+
+#: comments.php:29
+msgid "<span>One</span> Comment"
+msgstr "<span>Ein</span> Kommentar"
+
+#: comments.php:36
+#, php-format
+msgid "Posted %1$s at %2$s <span class=\"meta-sep\">|</span> <a href=\"%3$s\" title=\"Permalink to this comment\">Permalink</a>"
+msgstr "Veröffentlicht %1$s um %2$s <span class=\"meta-sep\">|</span> <a href=\"%3$s\" title=\"Permalink zu diesem Kommentar\">Permalink</a>"
+
+#: comments.php:41
+msgid "\t\t\t\t\t<span class='unapproved'>Your comment is awaiting moderation.</span>\n"
+msgstr "\t\t\t\t\t<span class='unapproved'>Ihr Kommentar muss noch genehmigt werden.</span>\n"
+
+#: comments.php:55
+#, php-format
+msgid "<span>%d</span> Trackbacks"
+msgstr "<span>%d</span> Trackbacks"
+
+#: comments.php:55
+msgid "<span>One</span> Trackback"
+msgstr "<span>Ein</span> Trackback"
+
+#: comments.php:62
+#, php-format
+msgid "By %1$s on %2$s at %3$s"
+msgstr "Von %1$s am %2$s um %3$s"
+
+#: comments.php:67
+msgid "\\t\\t\\t\\t\\t<span class=\"unapproved\">Your trackback is awaiting moderation.</span>\\n"
+msgstr "\\t\\t\\t\\t\\t<span class=\"unapproved\">Ihr Trackback muss noch genehmigt werden.</span>\\n"
+
+#: comments.php:82
+msgid "Post a Comment"
+msgstr "Schreiben Sie einen Kommentar"
+
+#: comments.php:85
+#, php-format
+msgid "You must be <a href=\"%s\" title=\"Log in\">logged in</a> to post a comment."
+msgstr "Sie müssen sich <a href=\"%s\" title=\"Log in\">einloggen</a> um einen Kommentar schreiben zu können."
+
+#: comments.php:93
+#, php-format
+msgid "<span class=\"loggedin\">Logged in as <a href=\"%1$s\" title=\"Logged in as %2$s\">%2$s</a>.</span> <span class=\"logout\"><a href=\"%3$s\" title=\"Log out of this account\">Log out?</a></span>"
+msgstr "<span class=\"loggedin\">Eingeloggt als <a href=\"%1$s\" title=\"Eingeloggt als %2$s\">%2$s</a>.</span> <span class=\"logout\"><a href=\"%3$s\" title=\"Von diesem Benutzerkonto ausloggen\">Ausloggen?</a></span>"
+
+#: comments.php:100
+msgid "Your email is <em>never</em> shared."
+msgstr "Ihre E-Mail-Adresse wird <em>niemals</em> weitergegeben."
+
+#: comments.php:100
+msgid "Required fields are marked <span class=\"required\">*</span>"
+msgstr "Pflichtfelder sind mit einem <span class=\"required\">*</span> markiert"
+
+#: comments.php:102
+msgid "Name"
+msgstr "Name"
+
+#: comments.php:102
+#: comments.php:105
+msgid "<span class=\"required\">*</span>"
+msgstr "<span class=\"required\">*</span>"
+
+#: comments.php:105
+msgid "Email"
+msgstr "E-Mail"
+
+#: comments.php:108
+msgid "Website"
+msgstr "Website"
+
+#: comments.php:113
+msgid "Comment"
+msgstr "Kommentar"
+
+#: comments.php:116
+msgid "Post Comment"
+msgstr "Kommentar schreiben"
+
+#: footer.php:3
+msgid "WordPress"
+msgstr "WordPress"
+
+#: footer.php:5
+msgid "Sandbox theme for WordPress"
+msgstr "Sandbox Theme für WordPress"
+
+#: footer.php:5
+msgid "Sandbox"
+msgstr "Sandbox"
+
+#: functions.php:361
+#: functions.php:469
+#: functions.php:471
+#: sidebar.php:35
+msgid "Search"
+msgstr "Suche"
+
+#: functions.php:390
+#: functions.php:443
+msgid "Title:"
+msgstr "Titel:"
+
+#: functions.php:391
+msgid "Button Text:"
+msgstr "Schaltflächentext:"
+
+#: functions.php:400
+#: functions.php:478
+#: functions.php:480
+#: sidebar.php:55
+msgid "Meta"
+msgstr "Meta"
+
+#: functions.php:419
+#: functions.php:487
+#: functions.php:488
+msgid "RSS Links"
+msgstr "RSS-Links"
+
+#: functions.php:424
+msgid "Posts RSS feed"
+msgstr "RSS-Feed für Beiträge"
+
+#: functions.php:424
+#: sidebar.php:49
+msgid "All posts"
+msgstr "Alle Beiträge"
+
+#: functions.php:425
+msgid "Comments RSS feed"
+msgstr "RSS-Feed für Kommentare"
+
+#: functions.php:425
+#: sidebar.php:50
+msgid "All comments"
+msgstr "Alle Kommentare"
+
+#: functions.php:467
+msgid "A search form for your blog (Sandbox)"
+msgstr "Ein Suchfeld für Ihr Blog (Sandbox)"
+
+#: functions.php:476
+msgid "Log in/out and administration links (Sandbox)"
+msgstr "Links für Login/Logout und Adminbereich (Sandbox)"
+
+#: functions.php:485
+msgid "RSS links for both posts and comments (Sandbox)"
+msgstr "RSS-Link für Beiträge und Kommentare (Sandbox)"
+
+#: header.php:8
+#: sidebar.php:49
+#, php-format
+msgid "%s latest posts"
+msgstr "%s letzten Beiträge"
+
+#: header.php:9
+#: sidebar.php:50
+#, php-format
+msgid "%s latest comments"
+msgstr "%s letzten Kommentare"
+
+#: header.php:23
+msgid "Skip to content"
+msgstr "Zum Inhalt"
+
+#: index.php:19
+#: page.php:13
+msgid "Pages:"
+msgstr "Seiten:"
+
+#: search.php:8
+msgid "Search Results for:"
+msgstr "Suchergebnis für:"
+
+#: search.php:11
+#: search.php:42
+msgid "<span class=\"meta-nav\">&laquo;</span> Older results"
+msgstr "<span class=\"meta-nav\">&laquo;</span> Ältere Suchergebnisse"
+
+#: search.php:12
+#: search.php:43
+msgid "Newer results <span class=\"meta-nav\">&raquo;</span>"
+msgstr "Neuere Suchergebnisse <span class=\"meta-nav\">&raquo;</span>"
+
+#: search.php:49
+msgid "Nothing Found"
+msgstr "Nichts gefunden"
+
+#: search.php:51
+msgid "Sorry, but nothing matched your search criteria. Please try again with some different keywords."
+msgstr "Entschuldigung, aber Ihre Suche brachte keine Treffer. Bitte versuchen Sie es mit anderen Suchbegriffen."
+
+#: sidebar.php:6
+msgid "Pages"
+msgstr "Seiten"
+
+#: sidebar.php:13
+msgid "Categories"
+msgstr "Kategorien"
+
+#: sidebar.php:21
+msgid "Archives"
+msgstr "Archive"
+
+#: sidebar.php:47
+msgid "RSS Feeds"
+msgstr "RSS Feeds"
+
+#: single.php:21
+#, php-format
+msgid "This entry was written by %1$s, posted on <abbr class=\"published\" title=\"%2$sT%3$s\">%4$s at %5$s</abbr>, filed under %6$s%7$s. Bookmark the <a href=\"%8$s\" title=\"Permalink to %9$s\" rel=\"bookmark\">permalink</a>. Follow any comments here with the <a href=\"%10$s\" title=\"Comments RSS to %9$s\" rel=\"alternate\" type=\"application/rss+xml\">RSS feed for this post</a>."
+msgstr "Dieser Beitrag wurde geschrieben von %1$s, veröffentlicht am <abbr class=\"published\" title=\"%2$sT%3$s\">%4$s um %5$s</abbr>, abgelegt unter %6$s%7$s. Benutzen Sie den <a href=\"%8$s\" title=\"Permalink für %9$s\" rel=\"bookmark\">Permalink</a> als Lesezeichen. Verfolgen Sie die Kommentare mit dem <a href=\"%10$s\" title=\"Kommentar-Feed für %9$s\" rel=\"alternate\" type=\"application/rss+xml\">RSS-Feed für diesen Beitrag</a>."
+
+#: single.php:28
+msgid " and tagged "
+msgstr "und getaggt"
+
+#: tag.php:6
+msgid "Tag Archives:"
+msgstr "Tag-Archiv:"
+
+#: tag.php:28
+#, php-format
+msgid "Also tagged %s"
+msgstr "Auch als %s getaggt"
+
