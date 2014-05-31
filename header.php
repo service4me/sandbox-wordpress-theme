@@ -43,14 +43,16 @@
   <meta property="og:locale" content="de_AT" />
   <link rel="stylesheet" type="text/css" href="<?php bloginfo('stylesheet_directory') ?>/css/default.css" />
   <link rel="stylesheet" type="text/css" href="<?php bloginfo('stylesheet_directory') ?>/css/layout.css" />
-  <link rel="stylesheet" media="print" type="text/css" href="<?php bloginfo('stylesheet_directory') ?>/css/style.css" />
-  <link rel="stylesheet" type="text/css" href="<?php bloginfo('stylesheet_directory') ?>/css/print.css" />
+  <link rel="stylesheet" type="text/css" href="<?php bloginfo('stylesheet_directory') ?>/css/style.css" />
+  <link rel="stylesheet" media="print" type="text/css" href="<?php bloginfo('stylesheet_directory') ?>/css/print.css" />
   <script src="<?php bloginfo('template_directory') ?>/js/modernizr-2.6.1-respond-1.1.0.min.js" /></script>
   <?php wp_head() // For plugins ?>
 	<link rel="alternate" type="application/rss+xml" href="<?php bloginfo('rss2_url') ?>" title="<?php printf( __( '%s latest posts', 'netzgestaltung' ), wp_specialchars( get_bloginfo('name'), 1 ) ) ?>" />
 	<link rel="pingback" href="<?php bloginfo('pingback_url') ?>" />
 </head>
 <body <?php body_class() ?>>
+
+© 2014 - Netzgestaltung.at - Web Services & IT-Dienstleistungen
   <header>
     <<?php if ( is_front_page() ) { echo 'h1'; } else { echo 'h2'; } ?> id="blog-title">
       <a href="<?php bloginfo('home') ?>/" title="<?php echo wp_specialchars( get_bloginfo('name'), 1 ) ?>" rel="home"><span><?php bloginfo('name') ?> <?php bloginfo('description') ?></span></a>
