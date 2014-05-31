@@ -10,7 +10,7 @@ var netzgestaltung = {};
     secureWebsite: 'www.uebermorgen.at',
     modules: {
 
-    }
+    } 
 
   };
 
