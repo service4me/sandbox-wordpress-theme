@@ -1,0 +1,12 @@
+
+.field_datepicker{
+  width:50%;
+  float:left;
+}
+.postbox .inside label, 
+.stuffbox .inside label,
+#poststuff div.postbox div.inside p.description, 
+#poststuff div.stuffbox div.inside p.description{
+  margin-left:0;
+  padding-left:0;
+}

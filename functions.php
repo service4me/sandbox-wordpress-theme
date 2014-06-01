@@ -1,31 +1,40 @@
 <?php
 /*
-This file is part of ng.
+This file is part of sandbox.
 
-ng is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version.
+sandbox is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version.
 
-ng is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+sandbox is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with ng. If not, see http://www.gnu.org/licenses/.
+You should have received a copy of the GNU General Public License alosandbox with ng. If not, see http://www.gnu.org/licenses/.
 */
 
-function ng_scripts_load(){
+function sandbox_scripts_load(){
+	// local jquery load
 	wp_deregister_script('jquery');
-	wp_register_script('jquery', 'http' . ($_SERVER['SERVER_PORT'] == 443 ? 's' : '') . '://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js', false, null, true);
+	wp_register_script('jquery', get_template_directory_uri() . '/includes/initializr/js/jquery-1.11.0.min.js', false, null, true);
 	wp_enqueue_script('jquery');
 
+	// comments reply script 
 	if (!is_admin()) {
 		if ( is_singular() && comments_open() && (get_option('thread_comments') == 1 ) ) {
 			wp_enqueue_script('comment-reply');
 		}
 	}
 
+  // custom script: edit there for your own needs
 	wp_register_script('actions', get_template_directory_uri() . '/js/actions.js', false, null, true); 
 	wp_enqueue_script('actions');
 }
 
+// add custom styles for plugin settings page
+function sandbox_admin_styles_load() { 
+	wp_register_style('ng_admin', get_template_directory_uri() . '/admin/style.css');
+	wp_enqueue_style('ng_admin');
+}
+
 // For category lists on category archives: Returns other categories except the current one (redundant)
-function ng_cats_meow($glue) {
+function sandbox_cats_meow($glue) {
 	$current_cat = single_cat_title( '', false );
 	$separator = "\n";
 	$cats = explode( $separator, get_the_category_list($separator) );
@@ -42,7 +51,7 @@ function ng_cats_meow($glue) {
 }
 
 // For tag lists on tag archives: Returns other tags except the current one (redundant)
-function ng_tag_ur_it($glue) {
+function sandbox_tag_ur_it($glue) {
 	$current_tag = single_tag_title( '', '',  false );
 	$separator = "\n";
 	$tags = explode( $separator, get_the_tag_list( "", "$separator", "" ) );
@@ -59,24 +68,28 @@ function ng_tag_ur_it($glue) {
 }
 
 // Widgets plugin: intializes the plugin after the widgets above have passed snuff
-function ng_sidebars_init() {
-	if ( !function_exists('register_sidebars') )
+function sandbox_sidebars_init() {
+
+	if ( !function_exists('register_sidebar') ) {
 		return;
+	}
+	
+	$sidebars = array('header', 'highlight', 'content-before', 'content-after', 'footer');
 
-	// Formats the ng widgets, adding readability-improving whitespace
-	$p = array(
-		'before_widget'  =>   '<div class="widget">',
-		'after_widget'   =>   '</div>',
-		'before_title'   =>   '<h3 class="widgettitle">',
-		'after_title'    =>   '</h3>'
-	);
-
-	// Table for how many? Two? This way, please.
-	register_sidebars( 4, $p );
+	foreach ( $sidebars as $sidebar ) {
+		register_sidebar(array(
+			'name' => $sidebar,
+			'id'   => 'sidebar-' . $sidebar,
+			'before_widget'  =>   '<div class="widget clearfix">',
+			'after_widget'   =>   '</div>',
+			'before_title'   =>   '<h3 class="title">',
+			'after_title'    =>   '</h3>'
+		));
+	}
 }
 
 
-function netzgestaltung_breadcrumbs() { // http://dimox.net/wordpress-breadcrumbs-without-a-plugin/
+function sandbox_breadcrumbs() { // http://dimox.net/wordpress-breadcrumbs-without-a-plugin/
 
 	/* === OPTIONS === */
 	$text['youarehere'] = __('You are here &raquo;', 'translate'); // 'Sie befinden sich hier &raquo; ';
@@ -248,7 +261,7 @@ function the_breadcrumb( $before = null, $sep = ', ', $after = '', $pageTitle = 
 
 }
 
-function ng_get_the_comments_link(){ // use this function only inside the loop.
+function sandbox_get_the_comments_link(){ // use this function only inside the loop.
 
   $comments_count = get_comments_number();
   $commentsListId = 'comments-list';
@@ -272,9 +285,9 @@ function ng_get_the_comments_link(){ // use this function only inside the loop.
 
 }
 
-function ng_the_comments_link(){ // use this function only inside the loop.
+function sandbox_the_comments_link(){ // use this function only inside the loop.
   
-  echo ng_get_the_comments_link();
+  echo sandbox_get_the_comments_link();
           	
 }
 
@@ -307,7 +320,7 @@ function generate_the_term_list( $id = 0, $taxonomy, $before = '', $sep = '', $a
 
 }
 
-function ng_get_the_tag_title(){
+function sandbox_get_the_tag_title(){
 
 	$terms = get_the_terms(0, 'post_tag');
 
@@ -329,13 +342,13 @@ function ng_get_the_tag_title(){
 
 }
 
-function ng_the_tag_title(){
+function sandbox_the_tag_title(){
 
-  echo ng_get_the_tag_title();
+  echo sandbox_get_the_tag_title();
 
 }
 
-function ng_get_the_tag_slug(){
+function sandbox_get_the_tag_slug(){
 
 	$terms = get_the_terms(0, 'post_tag');
 
@@ -357,13 +370,13 @@ function ng_get_the_tag_slug(){
 
 }
 
-function ng_the_tag_slug(){
+function sandbox_the_tag_slug(){
 
-  echo ng_get_the_tag_slug();
+  echo sandbox_get_the_tag_slug();
 
 }
 
-function ng_get_the_tag_id(){
+function sandbox_get_the_tag_id(){
 
 	$terms = get_the_terms(0, 'post_tag');
 
@@ -383,13 +396,13 @@ function ng_get_the_tag_id(){
 
 }
 
-function ng_the_tag_id(){
+function sandbox_the_tag_id(){
 
-  echo ng_get_the_tag_id();
+  echo sandbox_get_the_tag_id();
 
 }
 
-function ng_get_the_coauthor_meta( $field, $authorId ){
+function sandbox_get_the_coauthor_meta( $field, $authorId ){
 
 	$coauthors = get_coauthors();
 	
@@ -407,9 +420,9 @@ function ng_get_the_coauthor_meta( $field, $authorId ){
 
 }
 
-function ng_the_coauthor_meta( $field, $authorId ){
+function sandbox_the_coauthor_meta( $field, $authorId ){
 
-	echo ng_get_the_coauthor_meta( $field, $authorId );
+	echo sandbox_get_the_coauthor_meta( $field, $authorId );
 
 }
 
@@ -420,10 +433,10 @@ add_theme_support('html5');
 load_theme_textdomain('translate', get_template_directory() . '/translations');
 
 // Runs our code at the end to check that everything needed has loaded
-add_action( 'init', 'ng_widgets_init' );
+add_action( 'init', 'sandbox_sidebars_init' );
 
 // load scripts
-add_action('wp_enqueue_scripts', 'ng_scripts_load');
+add_action('wp_enqueue_scripts', 'sandbox_scripts_load');
 
 // moveable content editor
 add_action( 'add_meta_boxes', 'action_add_meta_boxes', 0 );
@@ -438,5 +451,5 @@ add_filter( 'archive_meta', 'convert_smilies' );
 add_filter( 'archive_meta', 'convert_chars' );
 add_filter( 'archive_meta', 'wpautop' );
 
-// Remember: the ng is for play.
+// Remember: the sandbox is for play.
 ?>
