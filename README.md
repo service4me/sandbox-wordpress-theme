@@ -10,8 +10,8 @@ Goals:
 - Mobile/Responsive Ready
 - develop individual templates fast and easy with HTML/CSS/Javascript
 
-## DEMO:
+### DEMO:
 http://sandbox.netzgestaltung.at
 
-## Download:
+### Download:
 http://sandbox.service4me.org
