@@ -41,6 +41,7 @@
 
     } ?>" />
   <meta property="og:locale" content="de_AT" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="<?php bloginfo('stylesheet_directory') ?>/includes/initializr/css/normalize.min.css" />
   <link rel="stylesheet" type="text/css" href="<?php bloginfo('stylesheet_directory') ?>/includes/initializr/css/main.css" />
   <link rel="stylesheet" type="text/css" href="<?php bloginfo('stylesheet_directory') ?>/css/default.css" />
@@ -60,7 +61,7 @@
   </nav>
 
   <div class="header-container">
-    <header class="wrapper clearfix">
+    <header class="wrapper clearfix site-header">
       <div class="name-slogan">
         <<?php 
             /*

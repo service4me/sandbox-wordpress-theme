@@ -6,7 +6,7 @@
 
     <?php while ( have_posts() ) : the_post() ?>
 
-		<article id="post-<?php the_ID() ?>" class="<?php post_class() ?> clearfix">
+		<article id="post-<?php the_ID() ?>" <?php post_class('clearfix') ?>>
 			<<?php if ( is_front_page() ) { echo 'h2'; } else { echo 'h1'; } ?> class="title">
 			  <a href="<?php the_permalink() ?>" title="<?php printf( __('Permalink to %s', 'translate'), the_title_attribute('echo=0') ) ?>" rel="bookmark"><?php the_title() ?></a>
 			</<?php if ( is_front_page() ) { echo 'h2'; } else { echo 'h1'; } ?>>

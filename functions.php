@@ -6,14 +6,18 @@ sandbox is free software: you can redistribute it and/or modify it under the ter
 
 sandbox is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License alosandbox with ng. If not, see http://www.gnu.org/licenses/.
+You should have received a copy of the GNU General Public License along with sandbox. If not, see http://www.gnu.org/licenses/.
 */
 
 function sandbox_scripts_load(){
 	// local jquery load
 	wp_deregister_script('jquery');
-	wp_register_script('jquery', get_template_directory_uri() . '/includes/initializr/js/jquery-1.11.0.min.js', false, null, true);
+	wp_register_script('jquery', get_template_directory_uri() . '/includes/initializr/js/vendor/jquery-1.11.0.min.js', false, null, true);
 	wp_enqueue_script('jquery');
+
+	wp_deregister_script('modernizr');
+	wp_register_script('modernizr', get_template_directory_uri() . '/includes/initializr/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js', false, null, true);
+	wp_enqueue_script('modernizr');
 
 	// comments reply script 
 	if (!is_admin()) {
@@ -425,15 +429,96 @@ function sandbox_the_coauthor_meta( $field, $authorId ){
 	echo sandbox_get_the_coauthor_meta( $field, $authorId );
 
 }
+/**
+ * Admin Settings page
+ * ===================
+ */
+function themename_customize_preview() {
+    ?>    
+    <script type="text/javascript">
+    ( function( $ ){
+    wp.customize('blogname',function( value ) {
+        value.bind(function(to) {
+            $('#site-title a').html(to);
+        });
+    });
+    wp.customize('blogdescription',function( value ) {
+        value.bind(function(to) {
+            $('#site-description').html(to);
+        });
+    });
+    wp.customize( 'header_textcolor', function( value ) {
+        value.bind( function( to ) {
+            $('#site-title a, #site-description').css('color', to ? to : '' );
+        });
+    });
+    } )( jQuery )
+    </script>
+    <?php
+} 
+
+function sandbox_customize_register($wp_customize) {
+
+	$wp_customize->add_section( 'sandbox_color_scheme', array(
+    'title'          => __( 'Color Scheme', 'sandbox' ),
+    'priority'       => 35,
+	) );
+
+	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_primary_color]', array(
+    'default'        => '#FBC242',
+    'type'           => 'option',
+    'capability'     => 'edit_theme_options',
+	) );
+	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_secondary_color]', array(
+    'default'        => '#FFE80F',
+    'type'           => 'option',
+    'capability'     => 'edit_theme_options',
+	) );
+	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_font_color]', array(
+    'default'        => '#222222',
+    'type'           => 'option',
+    'capability'     => 'edit_theme_options',
+	) );
+
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_primary_color', array(
+    'label'   => __( 'Primary Color', 'sandbox' ),
+    'section' => 'sandbox_color_scheme',
+    'settings'   => 'sandbox_theme_options[color_scheme_primary_color]',
+	) ) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_secondary_color', array(
+    'label'   => __( 'Secondary Color', 'sandbox' ),
+    'section' => 'sandbox_color_scheme',
+    'settings'   => 'sandbox_theme_options[color_scheme_secondary_color]',
+	) ) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_font_color', array(
+    'label'   => __( 'Font Color', 'sandbox' ),
+    'section' => 'sandbox_color_scheme',
+    'settings'   => 'sandbox_theme_options[color_scheme_font_color]',
+	) ) );
+
+	if ( $wp_customize->is_preview() && ! is_admin() ) {
+    add_action( 'wp_footer', 'themename_customize_preview', 21);
+	}
+	$wp_customize->get_setting('blogname')->transport='postMessage';
+	$wp_customize->get_setting('blogdescription')->transport='postMessage';
+	$wp_customize->get_setting('header_textcolor')->transport='postMessage';
+}
+
 
 add_theme_support('post-thumbnails');
-add_theme_support('html5');
+add_theme_support('custom-background');
+add_theme_support('html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption') );
+add_theme_support('custom-header');
+
 
 // Translate, if applicable
 load_theme_textdomain('translate', get_template_directory() . '/translations');
 
 // Runs our code at the end to check that everything needed has loaded
 add_action( 'init', 'sandbox_sidebars_init' );
+
+// lets customize the theme
+add_action( 'customize_register', 'sandbox_customize_register' );
 
 // load scripts
 add_action('wp_enqueue_scripts', 'sandbox_scripts_load');
