@@ -19,7 +19,7 @@ function sandbox_scripts_load(){
 	wp_register_script('modernizr', get_template_directory_uri() . '/includes/initializr/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js', false, null, true);
 	wp_enqueue_script('modernizr');
 
-	// comments reply script 
+	// comments reply script
 	if (!is_admin()) {
 		if ( is_singular() && comments_open() && (get_option('thread_comments') == 1 ) ) {
 			wp_enqueue_script('comment-reply');
@@ -27,12 +27,12 @@ function sandbox_scripts_load(){
 	}
 
   // custom script: edit there for your own needs
-	wp_register_script('actions', get_template_directory_uri() . '/js/actions.js', false, null, true); 
+	wp_register_script('actions', get_template_directory_uri() . '/js/actions.js', false, null, true);
 	wp_enqueue_script('actions');
 }
 
 // add custom styles for plugin settings page
-function sandbox_admin_styles_load() { 
+function sandbox_admin_styles_load() {
 	wp_register_style('ng_admin', get_template_directory_uri() . '/admin/style.css');
 	wp_enqueue_style('ng_admin');
 }
@@ -77,8 +77,8 @@ function sandbox_sidebars_init() {
 	if ( !function_exists('register_sidebar') ) {
 		return;
 	}
-	
-	$sidebars = array('header', 'highlight', 'content-before', 'content-after', 'footer');
+
+	$sidebars = array('header', 'menu', 'highlight', 'content-before', 'content-after', 'footer');
 
 	foreach ( $sidebars as $sidebar ) {
 		register_sidebar(array(
@@ -90,6 +90,15 @@ function sandbox_sidebars_init() {
 			'after_title'    =>   '</h3>'
 		));
 	}
+
+  // Special markup for widget pages
+	if ( $sidebar === 'menu' ) {
+
+	  $config['before_widget'] = '<nav class="widget clearfix">';
+	  $config['after_widget']  = '</nav>';
+
+	}
+
 }
 
 
@@ -239,7 +248,7 @@ function action_add_meta_boxes() {
     }
 
   }
-  
+
 }
 
 function content_metabox( $post ) {
@@ -290,9 +299,9 @@ function sandbox_get_the_comments_link(){ // use this function only inside the l
 }
 
 function sandbox_the_comments_link(){ // use this function only inside the loop.
-  
+
   echo sandbox_get_the_comments_link();
-          	
+
 }
 
 function generate_the_tag_list( $before = '', $sep = '', $after = '' ) {
@@ -333,7 +342,7 @@ function sandbox_get_the_tag_title(){
 	if ( empty( $terms ) ){ return false;	}
 
 	foreach ( $terms as $term ) {
-    
+
     if ( $term->name != 'Kolumne') {
 
     	$term_names[] = $term->name;
@@ -361,7 +370,7 @@ function sandbox_get_the_tag_slug(){
 	if ( empty( $terms ) ){ return false;	}
 
 	foreach ( $terms as $term ) {
-    
+
     if ( $term->slug != 'kolumne') {
 
     	$term_slugs[] = $term->slug;
@@ -389,9 +398,9 @@ function sandbox_get_the_tag_id(){
 
 	if ( empty( $terms ) )
 		return false;
-	
+
 	foreach ( $terms as $term ) {
-      
+
   	$term_ids[] = $term->term_id;
 
 	}
@@ -409,7 +418,7 @@ function sandbox_the_tag_id(){
 function sandbox_get_the_coauthor_meta( $field, $authorId ){
 
 	$coauthors = get_coauthors();
-	
+
 	foreach( $coauthors as $coauthor) {
 
     if ( $coauthor->id == $authorId ) {
@@ -434,7 +443,7 @@ function sandbox_the_coauthor_meta( $field, $authorId ){
  * ===================
  */
 function themename_customize_preview() {
-    ?>    
+    ?>
     <script type="text/javascript">
     ( function( $ ){
     wp.customize('blogname',function( value ) {
@@ -455,14 +464,21 @@ function themename_customize_preview() {
     } )( jQuery )
     </script>
     <?php
-} 
+}
 
 function sandbox_customize_register($wp_customize) {
 
+  $wp_customize->add_section( 'sandbox_logo_section' , array(
+    'title'       => __( 'Logo', 'sandbox' ),
+    'priority'    => 30,
+    'description' => 'Upload a logo to replace the default site name and description in the header',
+  ) );
 	$wp_customize->add_section( 'sandbox_color_scheme', array(
     'title'          => __( 'Color Scheme', 'sandbox' ),
     'priority'       => 35,
 	) );
+
+  $wp_customize->add_setting( 'sandbox_logo' );
 
 	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_primary_color]', array(
     'default'        => '#FBC242',
@@ -480,6 +496,11 @@ function sandbox_customize_register($wp_customize) {
     'capability'     => 'edit_theme_options',
 	) );
 
+  $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'sandbox_logo', array(
+    'label'    => __( 'Logo', 'sandbox' ),
+    'section'  => 'sandbox_logo_section',
+    'settings' => 'sandbox_logo',
+  ) ) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_primary_color', array(
     'label'   => __( 'Primary Color', 'sandbox' ),
     'section' => 'sandbox_color_scheme',

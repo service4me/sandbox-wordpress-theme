@@ -1,6 +1,7 @@
 <?php get_header() ?>
 
-		<article id="post-0" class="post error404 not-found">
+  <article id="content" class="<?php post_class(array('wrapper', 'container', 'clearfix', 'not-found', 'error404')) ?>">
+    <div class="inner">
 			<h2 class="title"><?php _e( 'Not Found', 'sandbox' ) ?></h2>
 			<div class="content">
 				<p><?php printf(__( 'Apologies, but we were unable to find what you were looking for. Perhaps  searching will help.', 'translate' )); ?></p>
@@ -11,6 +12,7 @@
 					<input class="button" type="submit" value="<?php printf(__e( 'Find', 'translate' )); ?>" />
 				</div>
 			</form>
-		</article><!-- .post -->
+		</div>
+	</article><!-- .post -->
 
 <?php get_footer() ?>

@@ -1,63 +1,65 @@
 <?php get_header() ?>
 
 	<? if ( have_posts() ) { ?>
-	
-	<section class="articles">
 
-    <?php while ( have_posts() ) : the_post() ?>
+  <section id="content" class="articles wrapper clearfix container">
+    <div class="inner">
 
-		<article id="post-<?php the_ID() ?>" <?php post_class('clearfix') ?>>
-			<<?php if ( is_front_page() ) { echo 'h2'; } else { echo 'h1'; } ?> class="title">
-			  <a href="<?php the_permalink() ?>" title="<?php printf( __('Permalink to %s', 'translate'), the_title_attribute('echo=0') ) ?>" rel="bookmark"><?php the_title() ?></a>
-			</<?php if ( is_front_page() ) { echo 'h2'; } else { echo 'h1'; } ?>>
+      <?php while ( have_posts() ) : the_post() ?>
 
-			<?php if ( has_post_thumbnail() ) { ?>
+		  <article id="post-<?php the_ID() ?>" <?php post_class('clearfix') ?>>
+			  <<?php if ( is_front_page() ) { echo 'h2'; } else { echo 'h1'; } ?> class="title">
+			    <a href="<?php the_permalink() ?>" title="<?php printf( __('Permalink to %s', 'translate'), the_title_attribute('echo=0') ) ?>" rel="bookmark"><?php the_title() ?></a>
+			  </<?php if ( is_front_page() ) { echo 'h2'; } else { echo 'h1'; } ?>>
 
-			<aside class="meta">
-				<a href="<?php the_permalink() ?>"><?php the_post_thumbnail('thumbnail'); ?></a>
-			</aside>
+			  <?php if ( has_post_thumbnail() ) { ?>
 
-			<?php } ?>
+			  <aside class="meta">
+				  <a href="<?php the_permalink() ?>"><?php the_post_thumbnail('thumbnail'); ?></a>
+			  </aside>
 
-			<div class="content">
+			  <?php } ?>
 
-			<?php if ( has_excerpt() ) { ?>
+			  <div class="content">
 
-				<?php the_excerpt(); ?>
-				<a class="more" href="<?php echo get_permalink(); ?>"><?php printf( __('Read More <span class="meta-nav">&raquo;</span>', 'translate') ); ?></a>
+			  <?php if ( has_excerpt() ) { ?>
 
-			<?php } else { ?>
+				  <?php the_excerpt(); ?>
+				  <a class="more" href="<?php echo get_permalink(); ?>"><?php printf( __('Read More <span class="meta-nav">&raquo;</span>', 'translate') ); ?></a>
 
-				<?php the_content(__('Read More <span class="meta-nav">&raquo;</span>', 'translate')); ?>
+			  <?php } else { ?>
 
-			<?php } ?>
+				  <?php the_content(__('Read More <span class="meta-nav">&raquo;</span>', 'translate')); ?>
 
-			  <?php wp_link_pages('before=<div class="page-link">' . __( 'Pages:', 'translate' ) . '&after=</div>'); ?>
+			  <?php } ?>
 
-			</div>
-		</article><!-- .post -->
+			    <?php wp_link_pages('before=<div class="page-link">' . __( 'Pages:', 'translate' ) . '&after=</div>'); ?>
 
-    <?php endwhile; ?>
+			  </div>
+		  </article><!-- .post -->
 
-		<?php if ( is_paged() ) { ?>
+      <?php endwhile; ?>
 
-	    <?php if ( function_exists('wp_pagenavi') ) { 
+		  <?php if ( is_paged() ) { ?>
 
-	    	wp_pagenavi(); // http://wordpress.org/plugins/wp-pagenavi/
+	      <?php if ( function_exists('wp_pagenavi') ) {
 
-	    } else { 
+	      	wp_pagenavi(); // http://wordpress.org/plugins/wp-pagenavi/
 
-	    ?>
-		
-			<nav id="nav-below" class="navigation">
-				<div class="nav-previous"><?php next_posts_link( __( '<span class="meta-nav">&laquo;</span> Older results', 'translate' ) ) ?></div>
-				<div class="nav-next"><?php previous_posts_link( __( 'Newer results <span class="meta-nav">&raquo;</span>', 'translate' ) ) ?></div>
-			</nav>
+	      } else {
 
-	    <?php } ?>
-	    
-    <?php } ?>
+	      ?>
 
+			  <nav id="nav-below" class="navigation">
+				  <div class="nav-previous"><?php next_posts_link( __( '<span class="meta-nav">&laquo;</span> Older results', 'translate' ) ) ?></div>
+				  <div class="nav-next"><?php previous_posts_link( __( 'Newer results <span class="meta-nav">&raquo;</span>', 'translate' ) ) ?></div>
+			  </nav>
+
+	      <?php } ?>
+
+      <?php } ?>
+
+    </div>
 	</section>
 
 	<?php } ?>

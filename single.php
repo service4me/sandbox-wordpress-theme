@@ -1,8 +1,9 @@
 <?php get_header() ?>
 
-    <?php the_post() ?>
+  <?php the_post() ?>
 
-    <article id="post-<?php the_ID() ?>" class="<?php post_class() ?>">
+  <article id="content" class="<?php post_class(array('wrapper', 'container', 'clearfix')) ?>">
+    <div class="inner">
       <h1 class="title"><?php the_title() ?></h1>
       <aside class="meta">
 
@@ -20,7 +21,7 @@
           <li class="category"><?php the_category(' '); ?></li>
         <?php }  ?>
 
-          <li class="comments"><?php comments_popup_link( __( 'Comments (0)', 'translate' ), __( 'Comments (1)', 'translate' ), __( 'Comments (%)', 'translate' ) ) ?></li>        
+          <li class="comments"><?php comments_popup_link( __( 'Comments (0)', 'translate' ), __( 'Comments (1)', 'translate' ), __( 'Comments (%)', 'translate' ) ) ?></li>
         </ul>
       </aside>
       <div class="content">
@@ -31,7 +32,7 @@
       </div>
 
       <?php if ( comments_open() ) { comments_template(); } ?>
-
-    </article><!-- .post -->
+    </div>
+  </article><!-- .post -->
 
 <?php get_footer() ?>

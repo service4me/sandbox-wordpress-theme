@@ -1,6 +1,7 @@
 <?php get_header() ?>
-	
-	<section class="articles">
+
+<section id="content" class="articles wrapper clearfix container">
+  <div class="inner">
 
 	<?php if ( is_tag()  || is_category() || is_author() ) : ?>
 
@@ -10,7 +11,7 @@
 		<?php elseif ( is_category() ) : $taxonomyDesc = category_description(); ?>
 		<h1 class="title"><?php single_cat_title() ?></h1>
 
-		<?php elseif ( is_author() ) : 
+		<?php elseif ( is_author() ) :
 
 			$curauth = get_query_var('author_name') ? get_user_by('slug', get_query_var('author_name')) : get_userdata(get_query_var('author');
 			$taxonomyDesc = get_the_author_meta('description', $curauth->ID);
@@ -95,14 +96,14 @@
 
 		<?php if ( is_paged() ) { ?>
 
-	    <?php if ( function_exists('wp_pagenavi') ) { 
+	    <?php if ( function_exists('wp_pagenavi') ) {
 
 	    	wp_pagenavi(); // http://wordpress.org/plugins/wp-pagenavi/
 
-	    } else { 
+	    } else {
 
-	    ?>		
-	    
+	    ?>
+
 			<nav id="nav-below" class="navigation">
 				<div class="nav-previous"><?php next_posts_link( __( '<span class="meta-nav">&laquo;</span> Older results', 'translate' ) ) ?></div>
 				<div class="nav-next"><?php previous_posts_link( __( 'Newer results <span class="meta-nav">&raquo;</span>', 'translate' ) ) ?></div>
@@ -115,7 +116,7 @@
 		<article id="post-0" class="post no-results not-found">
 			<h2 class="title"><?php printf(__( 'Not Found', 'translate' )); ?>  :-(</h2>
 			<div class="content">
-				<p><?php 
+				<p><?php
 
 				  if ( is_tag() ) {
 
@@ -129,11 +130,11 @@
 
 				  	printf(get_the_author() . ' ' . __("didn't wrote a post yet.", 'translate')); // 'hat noch keine Artikel verfasst.'
 
-				  } else { 
+				  } else {
 
-				  	printf(__('Apologies, but we were unable to find what you were looking for. Perhaps  searching will help.', 'translate')); 
+				  	printf(__('Apologies, but we were unable to find what you were looking for. Perhaps  searching will help.', 'translate'));
 
-				  } 
+				  }
 
 				?></p>
   		  <a href="<?php bloginfo('home'); ?>"><?php printf(__('Go to the homepage', 'translate')); // 'zur Startseite gehen' ?></a></p>
@@ -145,7 +146,7 @@
 		</article><!-- .post -->
 
 	<?php } ?>
-
-	</section>
+  </div>
+</section>
 
 <?php get_footer() ?>

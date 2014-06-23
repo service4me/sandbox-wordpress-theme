@@ -14,7 +14,7 @@
   <meta property="og:title" content="<?php is_front_page() ? bloginfo('description') : wp_title( '');?> - <?php echo wp_specialchars( get_bloginfo('name'), 1 ) ?>" />
   <meta property="og:type" content="<?php if ( is_single() ) { ?>article<?php } else { ?>Website<?php } ?>" />
   <meta property="og:url" content="<?php echo "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>" />
-  <meta property="og:image" content="<?php if ( is_single() && has_post_thumbnail() ) { 
+  <meta property="og:image" content="<?php if ( is_single() && has_post_thumbnail() ) {
 
       echo wp_get_attachment_image_src(get_post_thumbnail_id(),’large’, true);;
 
@@ -34,7 +34,7 @@
         echo htmlspecialchars( get_the_excerpt() );
 
       } else {
-        
+
         wp_title('');
 
       }
@@ -60,42 +60,63 @@
     </ul>
   </nav>
 
-  <div class="header-container">
-    <header class="wrapper clearfix site-header">
+  <!-- ______________________ HEADER _______________________ -->
+  <header id="siteHeader" class="clearfix site-header container">
+    <div class="inner wrapper">
+      <?php
+        /*
+        * @logo
+        */
+        if ( get_theme_mod('sandbox_logo') ) : ?>
+      <a href="<?php bloginfo('home'); ?>/" title="<?php echo wp_specialchars(__('Home')); ?>" rel="home" id="logo">
+        <img src="<?php echo esc_url(get_theme_mod('sandbox_logo')); ?>" alt="<?php echo wp_specialchars(__('Home')); ?>"/>
+      </a>
+      <?php endif; ?>
+
       <div class="name-slogan">
-        <<?php 
+
+        <<?php
             /*
             * @Site Name
             */
-          if ( is_front_page() ) { echo 'h1'; } else { echo 'h2'; } ?> id="site-name" class="title">
+          if ( is_front_page() || is_home() ) { echo 'h1'; } else { echo 'h2'; } ?> id="site-name" class="title">
           <a href="<?php bloginfo('home') ?>/" title="<?php echo wp_specialchars( get_bloginfo('name'), 1 ); ?>" rel="home"><?php bloginfo('name'); ?></a>
         </<?php if ( is_front_page() ) { echo 'h1'; } else { echo 'h2'; } ?>>
 
-        <?php 
+        <?php
           /*
           * @Site Slogan
-          */ ?>
+          */
+          if ( get_bloginfo('description') ) : ?>
           <div id="site-slogan"><?php bloginfo('description'); ?></div>
+          <?php endif; ?>
+
         </div>
 
-      <?php 
+      <?php
         /*
         * @Sidebar Header
         */
         get_sidebar('header'); ?>
 
+      </div>
     </header><!--  header -->
-  </div>
 
-  <?php 
+  <?php
+    /*
+    * @Sidebar Menu
+    */
+    get_sidebar('menu'); ?>
+
+  <?php
     /*
     * @Sidebar Highlight
     */
     get_sidebar('highlight'); ?>
 
-  <div class="main-container">
-    <div class="main clearfix wrapper">
-      <?php 
+  <div id="main" class="articles main clearfix container">
+    <div class="inner wrapper">
+      <?php
         /*
         * @Sidebar Content before
         */
