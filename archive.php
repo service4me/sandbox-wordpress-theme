@@ -13,7 +13,7 @@
 
 		<?php elseif ( is_author() ) :
 
-			$curauth = get_query_var('author_name') ? get_user_by('slug', get_query_var('author_name')) : get_userdata(get_query_var('author');
+			$curauth = get_query_var('author_name') ? get_user_by('slug', get_query_var('author_name')) : get_userdata(get_query_var('author'));
 			$taxonomyDesc = get_the_author_meta('description', $curauth->ID);
 			$taxonomyImage = get_avatar( get_the_author_meta('ID', $curauth->ID), 200 );
 
@@ -94,7 +94,6 @@
 
     <?php endwhile; ?>
 
-		<?php if ( is_paged() ) { ?>
 
 	    <?php if ( function_exists('wp_pagenavi') ) {
 
@@ -111,7 +110,7 @@
 
 	    <?php } ?>
 
-	<?php } else { ?>
+		<?php } else { ?>
 
 		<article id="post-0" class="post no-results not-found">
 			<h2 class="title"><?php printf(__( 'Not Found', 'translate' )); ?>  :-(</h2>
@@ -122,7 +121,7 @@
 
 						printf(__('No posts written tagged with', 'translate') . ' ' . single_tag_title(false));
 
-				  } elseif is_category() ) {
+				  } elseif ( is_category() ) {
 
 						printf(__('No posts written in', 'translate') . ' ' . single_cat_title(false));
 
@@ -149,4 +148,4 @@
   </div>
 </section>
 
-<?php get_footer() ?>
+<?php get_footer(); ?>
