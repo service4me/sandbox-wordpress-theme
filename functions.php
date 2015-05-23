@@ -9,7 +9,25 @@ sandbox is distributed in the hope that it will be useful, but WITHOUT ANY WARRA
 You should have received a copy of the GNU General Public License along with sandbox. If not, see http://www.gnu.org/licenses/.
 */
 
+add_filter('query_vars', 'register_color_css');
+function register_color_css($public_query_vars) {
+    $public_query_vars[] = 'color_css';
+    //my_theme_custom_var is the name of the custom query variable that is created and how you reference it in the call to the file
+    return $public_query_vars;
+}
+add_action('template_redirect', 'sandbox_dynamic_css_display');
+function sandbox_dynamic_css_display(){
+    $css = get_query_var('color_css');
+    if ($css == '1'){
+        include_once (TEMPLATEPATH . '/style.php');
+        exit;  //This stops WP from loading any further
+    }
+}
 function sandbox_scripts_load(){
+
+	wp_register_style('ng_colors', get_template_directory_uri() . '/css/colors.css.php');
+	wp_enqueue_style('ng_colors');
+
 	// local jquery load
 	wp_deregister_script('jquery');
 	wp_register_script('jquery', get_template_directory_uri() . '/includes/initializr/js/vendor/jquery-1.11.0.min.js', false, null, true);
@@ -252,9 +270,7 @@ function action_add_meta_boxes() {
 }
 
 function content_metabox( $post ) {
-
   wp_editor($post->post_content, 'content', array('dfw' => true, 'tabindex' => 1) );
-
 }
 
 function the_breadcrumb( $before = null, $sep = ', ', $after = '', $pageTitle = '') {
@@ -305,7 +321,7 @@ function sandbox_the_comments_link(){ // use this function only inside the loop.
 }
 
 function generate_the_tag_list( $before = '', $sep = '', $after = '' ) {
-return apply_filters( 'the_tags', generate_the_term_list( 0, 'post_tag', $before, $sep, $after ), $before, $sep, $after);
+  return apply_filters( 'the_tags', generate_the_term_list( 0, 'post_tag', $before, $sep, $after ), $before, $sep, $after);
 }
 
 function generate_the_term_list( $id = 0, $taxonomy, $before = '', $sep = '', $after = '' ) {
@@ -466,8 +482,16 @@ function themename_customize_preview() {
     <?php
 }
 
+function blah(){
+  echo 'blubb';
+}
+
 function sandbox_customize_register($wp_customize) {
 
+	/**
+	 * Add Sections
+	 * ============
+	 */
   $wp_customize->add_section( 'sandbox_logo_section' , array(
     'title'       => __( 'Logo', 'sandbox' ),
     'priority'    => 30,
@@ -478,43 +502,114 @@ function sandbox_customize_register($wp_customize) {
     'priority'       => 35,
 	) );
 
+	/**
+	 * Add Settings
+	 * ============
+	 */
   $wp_customize->add_setting( 'sandbox_logo' );
 
-	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_primary_color]', array(
-    'default'        => '#FBC242',
+	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_bg]', array(
+    'default'        => '#ffffff',
     'type'           => 'option',
     'capability'     => 'edit_theme_options',
 	) );
-	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_secondary_color]', array(
-    'default'        => '#FFE80F',
+	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_titleslogan]', array(
+    'default'        => '#232323',
     'type'           => 'option',
     'capability'     => 'edit_theme_options',
 	) );
-	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_font_color]', array(
+	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_text]', array(
     'default'        => '#222222',
     'type'           => 'option',
     'capability'     => 'edit_theme_options',
 	) );
+	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_link]', array(
+    'default'        => '#242424',
+    'type'           => 'option',
+    'capability'     => 'edit_theme_options',
+	) );
+	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_first_background]', array(
+    'default'        => '#fcc242',
+    'type'           => 'option',
+    'capability'     => 'edit_theme_options',
+	) );
+	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_first_text]', array(
+    'default'        => '#fefefe',
+    'type'           => 'option',
+    'capability'     => 'edit_theme_options',
+	) );
+	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_second_background]', array(
+    'default'        => '#ffe755',
+    'type'           => 'option',
+    'capability'     => 'edit_theme_options',
+	) );
+	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_second_text]', array(
+    'default'        => '#333333',
+    'type'           => 'option',
+    'capability'     => 'edit_theme_options',
+	) );
+	$wp_customize->add_setting( 'sandbox_theme_options[color_scheme_second_border]', array(
+    'default'        => '#656565',
+    'type'           => 'option',
+    'capability'     => 'edit_theme_options',
+	) );
 
+	/**
+	 * Add Controls
+	 * ============
+	 */
+	/* Logo */
   $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'sandbox_logo', array(
     'label'    => __( 'Logo', 'sandbox' ),
     'section'  => 'sandbox_logo_section',
     'settings' => 'sandbox_logo',
   ) ) );
-	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_primary_color', array(
-    'label'   => __( 'Primary Color', 'sandbox' ),
+
+	/* Colors */
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_bg', array(
+    'label'   => __( 'Main background', 'sandbox' ),
     'section' => 'sandbox_color_scheme',
-    'settings'   => 'sandbox_theme_options[color_scheme_primary_color]',
+    'settings'   => 'sandbox_theme_options[color_scheme_bg]',
 	) ) );
-	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_secondary_color', array(
-    'label'   => __( 'Secondary Color', 'sandbox' ),
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_titleslogan', array(
+    'label'   => __( 'Title and slogan', 'sandbox' ),
     'section' => 'sandbox_color_scheme',
-    'settings'   => 'sandbox_theme_options[color_scheme_secondary_color]',
+    'settings'   => 'sandbox_theme_options[color_scheme_titleslogan]',
 	) ) );
-	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_font_color', array(
-    'label'   => __( 'Font Color', 'sandbox' ),
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_text', array(
+    'label'   => __( 'Text Color', 'sandbox' ),
     'section' => 'sandbox_color_scheme',
-    'settings'   => 'sandbox_theme_options[color_scheme_font_color]',
+    'settings'   => 'sandbox_theme_options[color_scheme_text]',
+	) ) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_link', array(
+    'label'   => __( 'Link Color', 'sandbox' ),
+    'section' => 'sandbox_color_scheme',
+    'settings'   => 'sandbox_theme_options[color_scheme_link]',
+	) ) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_first_background', array(
+    'label'   => __( 'First background Color', 'sandbox' ),
+    'section' => 'sandbox_color_scheme',
+    'settings'   => 'sandbox_theme_options[color_scheme_first_background]',
+	) ) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_first_text', array(
+    'label'   => __( 'First text Color', 'sandbox' ),
+    'section' => 'sandbox_color_scheme',
+    'settings'   => 'sandbox_theme_options[color_scheme_first_text]',
+	) ) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_second_background', array(
+    'label'   => __( 'Second background Color', 'sandbox' ),
+    'section' => 'sandbox_color_scheme',
+    'settings'   => 'sandbox_theme_options[color_scheme_second_background]',
+	) ) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_second_text', array(
+    'label'   => __( 'Second text Color', 'sandbox' ),
+    'section' => 'sandbox_color_scheme',
+    'settings'   => 'sandbox_theme_options[color_scheme_second_text]',
+	) ) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'color_scheme_second_border', array(
+    'label'   => __( 'Second border Color', 'sandbox' ),
+    'section' => 'sandbox_color_scheme',
+    'settings'   => 'sandbox_theme_options[color_scheme_second_border]',
 	) ) );
 
 	if ( $wp_customize->is_preview() && ! is_admin() ) {
@@ -540,6 +635,9 @@ add_action( 'init', 'sandbox_sidebars_init' );
 
 // lets customize the theme
 add_action( 'customize_register', 'sandbox_customize_register' );
+
+// load styles
+add_action('wp_enqueue_styles', 'sandbox_styles_load');
 
 // load scripts
 add_action('wp_enqueue_scripts', 'sandbox_scripts_load');
