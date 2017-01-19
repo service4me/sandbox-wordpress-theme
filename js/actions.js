@@ -1,684 +1,540 @@
 // Custom page actions
-
-var netzgestaltung = {};
-
-
-;(function($, ng){
-
-  var configuration = {
-
-    secureWebsite: 'www.uebermorgen.at',
-    modules: {
-
-    } 
-
-  };
-
-  $.extend(true, ng || {}, {
-
-    enable: function(){
-
-      this.setConfig();
-
-    },
-    disable: function(){
-
-    },
-    getConfig: function(){
-
-      var config = $.isPlainObject(configuration) ? configuration : this.noConfig();
-
-      return config;
-
-    },
-    setConfig: function(){
-
-      var config = this.getConfig();
-
-      this.config = config;
-      this.utilities.config = config;
-
-    },
-    noConfig: function(){
-
-      return {};
-
-    },
-    utilities: {
-
-      getConfig: function(){
-
-        return this.config;
-
-      },
-      isFront: function(){
-
-        return $('body').is('.home');
-
-      },
-      getViewportSize: function(){
-
-        var size = {
-
-            width: $('html').innerWidth(),
-
-            height: $('html').innerHeight()
-
-        }
-
-        return size;
-
-      }
-
-    },
-    modules: {
-
-    }
-
-  });
-
-  ng.mobile = {
+;(function($, M){
+  'use strict';
     
-    resizeTimeout: null,
-    cookie: null,
-    sweetSpot: 987,
-    checkIfMobile: function(){
-      
-      var size = ng.utilities.getViewportSize();
-    
-      if ( size.width <= ng.mobile.sweetSpot ) {
-        
-        return true;
-        
-      }
-      
-      return false;
-      
-    },
-    desktopModeModule: {
-      
-      enable: function() {},
-      disable: function() {},
-      enableMobile: function() {
+  window.sandboxTheme = function(){
+    var resize = function resize(){
+          var feature,
+              featureName;
 
-        ng.mobile.desktopModeModule.enableMobileCSS();
-        ng.mobile.desktopModeModule.removeBackToLink();
-        ng.mobile.enableMobileLogic();
-          
-      },
-      disableMobile: function() {
+          /**
+           * Resize all features
+           */
+          for ( featureName in sandboxTheme.features ) {
+            if ( sandboxTheme.info['feature-' + featureName] ) {
+              feature = sandboxTheme.features[featureName];
 
-        ng.mobile.desktopModeModule.disableMobileCSS();
-        ng.mobile.desktopModeModule.addBackToLink();
-        ng.mobile.disableMobileLogic();
-          
-      },
-      disableMobileCSS: function() {
-        
-        var link = $('link[href$="style_mobile.css"]'),
-            href = link.attr('href');
-
-        href = href.replace('style_mobile.css', 'style.css');
-        link.attr('href', href);
-          
-      },
-      enableMobileCSS: function() {
-        
-        var link = $('link[href$="style.css"]:last'),
-            href = link.attr('href');
-
-        href = href.replace('style.css', 'style_mobile.css');
-        link.attr('href', href);
-          
-      },
-      addBackToLink: function() {},
-      removeBackToLink: function() {},
-      setCookie: function() {},
-      getCookie: function() {},
-      deleteCookie: function() {}
-      
-    },
-    imagehandling: {
-
-      isDifferntSize: function($image){
-
-        return ( $image.outerWidth() != $image.parent().outerWidth() );
-
-      },
-      enable: function(){
-
-        var self = this;
-
-        $('#page img').not('no-mobile').each(function(){
-          
-          $(this).parent().css({'display' : 'block'});
-
-          var width = $(this).parent().outerWidth(),
-              imageSize = $(this).data('image') || {width: false, height: false},
-              newImageHeight;
-
-          imageSize.width = imageSize.width ? imageSize.width : $(this).outerWidth();
-          imageSize.height = imageSize.height ? imageSize.height : $(this).outerHeight();
-
-          if ( self.isDifferntSize($(this)) && !$('.view-aktuelles-angebot').has('img').length > 0 ) {
-
-            newImageHeight = imageSize.height / (imageSize.width / width);
-
-            if ( $.type($(this).data('image')) == 'undefined' ) {
-
-              $(this).data('image', {width: imageSize.width, height: imageSize.height});
-
+              feature.resize();
             }
-
-            $(this).css({'width': width, 'height': newImageHeight});
-
           }
+        },
+        ready = function ready(){
+          var feature,
+              featureName;
 
-        });
+          /**
+           * Ready all features
+           */
+          for ( featureName in sandboxTheme.features ) {
+            if ( sandboxTheme.info['feature-' + featureName] ) {
+              feature = sandboxTheme.features[featureName];
 
-      },
-      disable: function(){
-
-        $('#page img').removeAttr('style');
-
-      },
-      resize: function(){
-
-        this.enable();
-
-      }
-
-    },
-    logoModule: {
-
-      getconfig: function(){
-
-        var $title = $('#blog-title a'),
-            titleWidth = $title.width(),
-            logoSrc = $title.css('background-image'),
-            $logo;
-
-        logoSrc = logoSrc.replace(/url\((['"])?(.*?)\1\)/gi, '$2');
-        
-        $logo = $('<img src="' + logoSrc + '" />').css({height:'auto'});
-
-        return {
-
-          title: $title,
-          titleWidth: titleWidth,
-          logo: $logo,
-
-        };
-
-      },
-      enable: function(){
-
-        var config = this.getconfig(),
-            titleHeight;
-
-        config.logo.appendTo('body').width(config.titleWidth);
-        titleHeight = config.logo.height();
-        config.title.height(titleHeight);
-        config.logo.remove();
-
-      },
-      disable: function(){
-
-        var config = this.getconfig();
+              feature.ready();
+            }
+          }
+        },
+        setup = function setup(){
+          var featureName,
+              feature,
+              featureOptions,
+              dataName,
+              dataValue,
+              data = arguments[0];
+              
+          sandboxTheme.info = {};
+          sandboxTheme.page = {};
           
-        config.title.removeAttr('style');
-
-      },
-      resize: function(){
-
-        this.enable();
-
-      }
-
-    },
-    navigationModule: {
-
-      config: {
-
-        navId: 'top',
-        menuId: 'menu-main',
-        togglerId: 'menu-toggle',
-        toggleText: 'Toggle Menu',
-        activeClass: 'active'
-
-      },
-      enable: function () {
-
-        var config = $.extend(true, {}, this.config),
-            $toggler = $('<a href="' + config.menuId + '" id="' + config.togglerId + '">' + config.toggleText + '</a>');
-
-        $toggler.on({
-
-          click: function(event){
-
-            var $target = $('#' + $(this).attr('href'));
-
-            if ( $target.is('.' + config.activeClass) ) {
-
-              $target.toggleClass(config.activeClass).find('a').eq(0).trigger('focus');
-
-            } else {
-
-              $target.toggleClass(config.activeClass).next().trigger('focus');
-
+          if ( $.isPlainObject(data) ) {
+            for ( dataName in data ) {
+              dataValue = dataName === 'id' ? parseInt(data[dataName]) : data[dataName];
+              
+              if ( dataName !== 'info') {
+                sandboxTheme.page[dataName] = dataValue;
+              }
             }
-
-            $(this).toggleClass(config.activeClass);
-
-            event.preventDefault();
-
-          }
-
-        });
-
-        $('#' + config.menuId).before($toggler);
-
-
-      },
-      disable: function () {
-
-        var config = $.extend(true, {}, this.config);
-
-        $('#' + config.togglerId).remove();
-        $('#' + config.menuId).removeAttr('style').removeClass('active');
-
-      }
-        
-    },
-    searchModule: {
-
-      config: {
-
-        navId: 'top',
-        searchId: 'searchform',
-        inputId: 's',
-        togglerId: 'search-toggle',
-        toggleText: 'Toggle Search',
-        activeClass: 'active'
-
-      },
-      enable: function () {
-
-        var config = $.extend(true, {}, this.config),
-            $toggler = $('<a href="' + config.searchId + '" id="' + config.togglerId + '">' + config.toggleText + '</a>'),
-            size = ng.utilities.getViewportSize(),
-            searchWidth,
-            togglerWidth = 82;
-
-        $toggler.on({
-
-          click: function(event){
-
-            var $target = $('#' + $(this).attr('href'));
-
-            if ( $target.is('.' + config.activeClass) ) {
-
-              $target.animate({top:-40}, 500, $.easing.easeOutCubic()).toggleClass(config.activeClass);
-
-              $(this).trigger('focus');
-
-            } else {
-
-              $target.animate({top:0}, 300, $.easing.easeOutCubic()).toggleClass(config.activeClass)
-
-              $('#' + config.inputId).trigger('focus');
-
+            if ( data.hasOwnProperty('info') ) {
+              for ( dataName in data.info ) {
+                sandboxTheme.info[dataName] = data.info[dataName];
+              }
             }
-
-            $(this).toggleClass(config.activeClass);
-
-            event.preventDefault();
-
           }
-
-        });
-
-        $('#' + config.searchId).before($toggler);
-
-        searchWidth = size.width - togglerWidth;
-
-        $('#' + config.searchId).width(searchWidth);
-
-      },
-      disable: function () {
-
-        var config = $.extend(true, {}, this.config);
-
-        $('#' + config.togglerId).remove();
-        $('#' + config.searchId).removeAttr('style').removeClass('active');
-
-      },
-      resize: function(){
-
-        var config = $.extend(true, {}, this.config),
-            size = ng.utilities.getViewportSize(),
-            searchWidth,
-            togglerWidth = 82;
-
-        searchWidth = size.width - togglerWidth;
-
-        $('#' + config.searchId).width(searchWidth);
-
-      }
-        
-    },
-    enableMobileLogic: function () {
-
-      // Disable desktop elements.
-      // ng.tabsModule.disable();
-      // ng.iframeModule.disable();
-
-      // Enable mobile elements.
-      // ng.mobile.imagehandling.enable();
-      ng.mobile.logoModule.enable();
-      ng.mobile.navigationModule.enable();
-      ng.mobile.searchModule.enable();
-      
-    },
-    disableMobileLogic: function () {
-
-      // Disable mobile elements.
-      // ng.mobile.imagehandling.disable();
-      ng.mobile.logoModule.disable();
-      ng.mobile.navigationModule.disable();
-      ng.mobile.searchModule.disable();
-
-      // Enable desktop elements.
-      // ng.tabsModule.enable();
-      ng.iframeModule.enable();
-      
-    },
-    addResizeEvent: function () {
-
-      $(window).resize( function(e) {
-
-        // Set timeout to avoid constant execution.
-        clearTimeout(ng.mobile.resizeTimeout);
-        ng.mobile.resizeTimeout = setTimeout(ng.mobile.doneResizing, 10);
-        
-      });
-      
-    },
-    doneResizing: function () {
-      
-      var wasMobile = ng.isMobile,
-          isMobile = ng.mobile.checkIfMobile();
-
-
-      // ng.newsModule.resize();
-
-      // In mobile all the time.
-      if ( wasMobile === true && isMobile === true ) {
-        
-        // Reload to fix width.
-        ng.mobile.logoModule.resize();
-        ng.mobile.searchModule.resize();
-        
-      }
-      
-      // Switched to mobile.
-      if ( isMobile === true && wasMobile === false ) {
-        
-        ng.isMobile = true;
-
-        ng.mobile.enableMobileLogic();
-        
-      }
-
-      // Switched to desktop.
-      if ( isMobile === false && wasMobile === true ) {
-
-        ng.isMobile = false;
-
-        ng.mobile.disableMobileLogic();
-        
-      }
-      
-    },
-    checkIfIphone: function () {
-
-      if ( navigator.userAgent.match(/iPhone/i) ) {
-        
-        return true;
-        
-      }
-      
-      return false;
-      
-    },
-    iphoneViewportFix: function() {
-
-      var metas = $('meta[name=viewport]');
-
-      if ( ng.mobile.checkIfIphone() === false ) {
-        
-        return;
-        
-      };
-
-      // Fix the scale on init.
-      metas.attr('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0');
-
-      metas.attr('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0');
-
-      $('body').bind('orientationchange', function(event) {
-
-        // Fix the scale on orientation change.
-        metas.attr('content','width=device-width, initial-scale=1.0, maximum-scale=1.0');
-        
-      });
-
-      $('body').bind('gesturestart', function(event) {
-
-          // Extend the scale on gesture start.
-          metas.attr('content', 'width=device-width, initial-scale=1.0, maximum-scale=3.0');
           
-      });
-      
-    }
-    
-  };
+          // $.log(data.info);
+          
+          /**
+           * Loop through all features to set all neccessary data
+           * ====================================================
+           * After all their .ready() function will be executet and the nxr.info object gets updated.
+           */
+          for ( featureName in sandboxTheme.features ) {
+            feature = sandboxTheme.features[featureName];
+          
+            /**
+             * Make a copy of merged page feature options and feature options
+             * jQuery.extend() will take care for a boolean value of options.page.features[featureName]
+             */
+            featureOptions = $.extend(true, {}, feature.options || {});
 
-  $(document).ready(function(){
-
-
-    ng.enable();
-
-    if ( $.type(window.console) != 'undefined') {
-
-      console.log( ng );
-
-    }
-
-    ng.isMobile = ng.mobile.checkIfMobile();
-
-    if ( $('html').is('.lt-ie10') ) {
-
-      return;
-        
-    }
-
-    if ( ng.isMobile === true ) {
-      
-      ng.mobile.enableMobileLogic();
-        
-    }
-
-    ng.mobile.addResizeEvent();
-    ng.mobile.iphoneViewportFix();
-    
-    $('#menu-main > li').on('mouseenter.dropdown focusin.dropdown', function(){
-
-      $(this).addClass('dropdown');
-
-    }).on('mouseleave.dropdown focusout.dropdown', function(){
-
-      $(this).removeClass('dropdown');
-
-    });
-
-    var tagWahrnemung = function(){
-
-      var $activeMenuElement = $('#menu-main > li.current-menu-item, #menu-main > li.current-menu-parent'),
-          objectiveClass = 'objective',
-          subjectiveClass = 'subjective',
-          isObjective = $activeMenuElement.is('.' + objectiveClass),
-          isSubjective = $activeMenuElement.is('.' + subjectiveClass);
-
-      if ( isObjective ) {
-
-        $('#mainContent .page-title, #mainContent .description').addClass(objectiveClass);
-
-      } else if ( isSubjective ) {
-
-        $('#mainContent .page-title, #mainContent .description').addClass(subjectiveClass);
-
-      }
-
-
-    }
-
-    tagWahrnemung();
-
-    var singleMenuClass = function(){
-
-      var bodyClass,
-          bodyClasses,
-          tags = [];
-
-      if ( $('body').is('.single') ) {
-
-        bodyClass = $('body').attr('class');
-        bodyClasses = bodyClass.split(' ');
-
-        $.each(bodyClasses, function(index, bodyClass){
-
-          if ( bodyClass.match('s-tag') !== null ) {
-
-            tags.push(bodyClass.substring(bodyClass.lastIndexOf('-')+1));
-
+            /**
+             * Merge the feature with common feature functions, options and info
+             */
+            $.extend(true, feature, {
+              options: featureOptions,
+              info: {
+                name: featureName
+              }
+            });
+            sandboxTheme.info['feature-' + featureName] = Boolean(feature.setup());
           }
-
-        });
-
-        $('#menu-main > li > a').each(function(index){
-
-          var $this = $(this),
-              text = $this.text();
-
-          $.each(tags, function(index, tag){
-
-            if ( tag == text.toLowerCase() ) {
-
-              $this.parent().addClass('current-menu-parent');
-
-            }
-
+          
+          /**
+           * Execute ready event
+           */
+          $(document).on('ready', function(){
+            ready();
           });
-
-        });
-
-      }
-
-    }
-
-    singleMenuClass();
-
-
-    $('#commentform').hide();
-
-    $('#respond > h3 > a').on('click.commentform', function(event){
-
-      $($(this).attr('href')).trigger('focusin.commentform').slideDown(600, 'swing', function(){
-
-        var $this = $(this);
-
-        $('html, body').animate({'scrollTop' : $this.offset().top}, 600, 'swing', function(){
-
-          window.location.hash = $this.attr('id');
-
-        });
-
-      });
-
-      event.preventDefault();
-
-    });
-
-    $('#mainContent > .meta .comments a').on('click.commentscroll', function(event){
-
-      var comementsLink = $(this).attr('href'),
-          commentsId = comementsLink.substring(comementsLink.lastIndexOf('#')),
-          commentsOffset = $(commentsId).offset();
-
-      $('html, body').animate({'scrollTop' : commentsOffset.top}, 600, 'swing', function(){
-
-        if ( $(this).is('body') ) {
-
-          $('#respond > h3 > a').trigger('click.commentform');
-
+    
+          /**
+           * Execute resize event
+           */
+          $(window).on('debouncedresize', function() {                
+            resize();
+          });
+        };
+    
+    return {
+      init: function init(){
+        setup(arguments[0] || null);
+      },
+      is_page: function is_page(){
+        var id = typeof arguments[0] !== 'undefined' ? parseInt(arguments[0]) : null;
+        
+        if ( id ) {
+          return id === sandboxTheme.page.id;
+        } else {
+          return sandboxTheme.info.is_page;
         }
-
-      });
-
-      event.preventDefault();
-
-    });
-
-    menu = {
-
-      defaults: {},
-      init: function(){
-
-        var config = $.extend(true, {}, this.defaults || {});
-
-        this.setConfig(config);
-
-      },
-      setConfig: function(config){
-
-        this._config = $.type(config) == 'object' ? config : {};
-
-      },
-      getConfig: function(){
-
-        return $.type(this._config) == 'object' ? this._config : {};
-
-      },
-      enable: function(){
-
-        var config = this.getConfig();
-
-      },
-      disable: function(){
-
-        var config = this.getConfig();
-
-      },
-      decorate: function(){
-
-        var config = this.getConfig();
-
-      },
-      undecorate: function(){
-
-        var config = this.getConfig();
-
-      },
-      change: function(){
-
-        var config = this.getConfig();
-
       }
-
     };
+  }();
+  
+  sandboxTheme.features = {
+  
+    /**
+     * equal heights for columns
+     * =========================
+     */
+    equalHeights: {
+      options: {
+        disableOn: 600,
+        selectors: {
+          containers: '.articles',
+          column: 'article > .inner'
+        }
+      },
+      info: {},
+      get_highest: function get_highest(container){
+        var selectors = this.options.selectors,
+            highest = 0;
+        
+        $(container).find(selectors.column).each(function(){
+          var $column = $(this),
+              columnHeight = parseInt($column.innerHeight());
+          if ( columnHeight > highest ) {
+            highest = columnHeight;
+          }
+        });
+        
+        return highest;
+      },
+      set_heights: function set_heights(container, height){  
+        var selectors = this.options.selectors;
+          
+        $(container).find(selectors.column).each(function(){
+          var $column = $(this),
+              hasPadding = parseInt($column.css('padding-top')) > 0,
+              finalHeight = height;
+              
+          if ( hasPadding ) {
+            finalHeight = height - ( parseInt($column.css('padding-top')) + parseInt($column.css('padding-bottom')) );
+          }
+          $column.height(finalHeight);
+        });
+      },
+      remove_heights: function remove_heights(container){
+        var selectors = this.options.selectors;
+        
+        $(container).find(selectors.column).each(function(){
+          $(this).removeAttr('style');
+        });
+      },
+      equal_heights: function equal_heights(){
+        var selectors = this.options.selectors,
+            $columns = this.$containers.find(selectors.column),
+            equalHeights = this;
+            
+        this.$containers.each(function(){   
+          var $container = this;
+          
+          setTimeout(function(){
+            var highest;
+          
+            equalHeights.remove_heights($container);
+            highest = equalHeights.get_highest($container);
+            equalHeights.set_heights($container, highest);
+          }, 600);
+        });
+      },
+      resize: function resize(){
+        var disable = M.check_breakpoint(this.options.disableOn, true),
+            equalHeights = this;
+        
+        if ( disable ) {
+          this.$containers.each(function(){
+            equalHeights.remove_heights(this);
+          });
+        } else {
+          this.equal_heights();
+        }
+      },
+      ready: function ready(){        
+        this.$containers = $(this.options.selectors.containers);
+        this.resize();
+      },
+      setup: function setup(){
+        var isSetup = false; //sandboxTheme.info.is_front_page || sandboxTheme.info.is_home || sandboxTheme.info.is_archive;
+        return isSetup;
+      }
+    },
+  
+    /**
+     * Mobile burger menu
+     * ==================
+     */
+    menu: {
+      options: {
+        disableOn: 600,
+        selectors: {
+          nav: '#menuBar',
+          menu: '.menu',
+          toggler: '#menu-toggle',
+        },
+        classNames: {
+          togglerClass: 'toggle',
+          activeClass: 'active'
+        },
+        texts: {
+          toggleText: 'Toggle Menu'
+        }
+      },
+      info: {},
+      enable: function () {
+        var options = this.options,
+            currentScrollTop = $('html').scrollTop(),
+            oldScrollTop = 0;
 
+        this.$menu = $(options.selectors.nav + ' ' + options.selectors.menu);
+        this.$has_subMenu = this.$menu.find('.menu-item-has-children');
+        this.$toggler = $('<a href="' + options.selectors.menu + '" id="' + options.selectors.toggler.replace('#', '') + '" class="' + options.classNames.togglerClass + '">' + options.texts.toggleText + '</a>');
 
+        this.$toggler.on({
+          click: function(event){
+            var $toggler = $(this),
+                $body = $('body'),
+                $target = $($toggler.attr('href'));
+
+            if ( $target.is('.' + options.classNames.activeClass) ) {
+              $toggler.removeClass(options.classNames.activeClass);
+              $target.removeClass(options.classNames.activeClass).next().trigger('focus');
+              $body.removeClass('menu-' + options.classNames.activeClass);
+
+              if ( currentScrollTop !== oldScrollTop ) {
+                $('html, body').animate({scrollTop:oldScrollTop}, '300', function(){
+                  currentScrollTop = oldScrollTop;
+                });
+              }
+
+            } else {
+              $toggler.addClass(options.classNames.activeClass);
+              $target.addClass(options.classNames.activeClass).find('a').eq(0).trigger('focus');
+              oldScrollTop = $('html').scrollTop();;
+              currentScrollTop = 0
+              $('html, body').animate({scrollTop:currentScrollTop}, '300', function(){
+                $body.addClass('menu-' + options.classNames.activeClass);
+              });
+            }
+            event.preventDefault();
+          }
+        });
+
+        this.$menu.before(this.$toggler);
+
+        this.$subMenus = this.$has_subMenu.each(function(){ return $(this).children('ul')});
+
+        this.$has_subMenu.children('ul').each(function(){
+          var $subMenu = $(this),
+              toggle_subMenu = function toggle_subMenu($newActiveSubMenuParent){
+                $newActiveSubMenuParent.toggleClass('toggled-' + options.classNames.activeClass);
+                $newActiveSubMenuParent.children('ul').slideToggle();
+              };
+
+          $subMenu.hide().prepend($('<li class="sub-menu-parent-link" />').prepend($subMenu.prev('a').clone())).prev('a').on({
+            click: function click(event){
+              var $newActiveSubMenuParent = $(this).parent('li'),
+                  $activeSubMenuParent = $newActiveSubMenuParent.siblings('.toggled-' + options.classNames.activeClass);
+
+              if ( $activeSubMenuParent.length > 0 ) {
+                toggle_subMenu($activeSubMenuParent)
+              }
+              toggle_subMenu($newActiveSubMenuParent);
+
+              event.preventDefault();
+            }
+          });
+        });
+        
+        this.info.isActive = true;
+
+      },
+      disable: function () {
+        var options = this.options;
+
+        this.$toggler.off('click').remove();
+        this.$menu.find('a').off('click');
+        this.$menu.find('.sub-menu-parent-link').remove();
+        this.$menu.removeAttr('style').removeClass(options.classNames.activeClass);
+        this.$menu.find('ul').removeAttr('style');
+        $('body').removeClass('menu-' + options.classNames.activeClass);
+        this.info.isActive = false;
+      },
+      resize: function resize(){
+        var disable = M.check_breakpoint(this.options.disableOn);
+        
+        if ( disable ) {
+          if ( this.info.isActive ) {
+            this.disable();
+          }
+        } else {
+          if ( !this.info.isActive ) {
+            this.enable();
+          }
+        }
+      },
+      ready: function ready(){
+        this.resize();
+      },
+      setup: function setup(){
+        this.info.isActive = false;
+        return true;
+      }
+    },
+  
+    /**
+     * Nicer comments form
+     * ===================
+     */
+    comments: {
+      options: {
+        selectors: {
+          commments: '#comments',
+          respond: '#respond',
+          commentForm: '#commentform',
+          trigger: '.comment-reply-title'
+        }
+      },
+      info: {
+        isTriggered: false
+      },
+      events: function events(){
+        var $trigger = this.$trigger,
+            $commentForm = this.$commentForm,
+            $respond = this.$respond,
+            info = this.info;
+        
+        $trigger.on('click.' + info.name, function(event){
+          if ( !info.isTriggered ) {
+            $commentForm.trigger('focusin.' + info.name).slideDown(600, 'swing', function(){
+              $('html, body').animate({'scrollTop' : $commentForm.offset().top}, 600, 'swing', function(){
+                window.location.hash = $commentForm.attr('id');
+              });
+            });
+            info.isTriggered = true;
+          } else {
+            $commentForm.trigger('blur.' + info.name).slideUp(600, 'swing', function(){
+              $('html, body').animate({'scrollTop' : $respond.offset().top}, 600, 'swing', function(){
+                window.location.hash = $respond.attr('id');
+              });
+            });
+            info.isTriggered = false;
+          }
+          event.preventDefault();
+        });
+      },
+      resize: function resize(){},
+      ready: function ready(){
+        var selectors = this.options.selectors;
+        
+        // this.$comments = $(selectors.comments);
+        this.$respond = $(selectors.respond);
+        this.$commentForm = $(selectors.commentForm).hide();
+        this.$trigger = this.$respond.find(selectors.trigger);
+        
+        this.events();
+      },
+      setup: function setup(){
+        return true;
+      }
+    },
+    /**
+     * Carousel
+     * ========
+     */
+    carousel: {
+      options: {
+        classNames:{
+          prev: 'prev',
+          next: 'next'
+        },
+        selectors: {
+          container: '.slider',
+          navigation: '.prev-next',
+          articlesContainer: 'section.articles'
+          
+        },
+        texts: {
+          prev: 'Zur&uuml;ck',
+          next: 'Vor',
+        }
+      },
+      resize: function resize(){},
+      ready: function ready(){
+        var $container = $('.slider'),
+            has_carousel = $container.length > 0,
+            $articlesContainer = $('section.articles'),
+            is_archive = $articlesContainer.length > 0;
+
+        if ( has_carousel ) {
+          (function(){
+            var $navigation = $('<div class="prev-next"></div>'),
+                $carousel = $('.slides', $container),
+                $slides = $('.slide', $carousel),
+                is_articlesContainer = $container.is('.articles'),
+                scrollDuration = 1000,
+                set_containerHeight = function set_containerHeight(data){
+
+                  $container.animate({
+                    width: data.width,
+                    height: data.height,
+                  }, {
+                    duration: scrollDuration
+                  });
+                },
+                set_activeClassName = function set_activeClassName(data){
+                  var activeSlide = data.items.hasOwnProperty('visible') ? data.items.visible[0] : data.items[0]
+                  $(activeSlide).addClass('active');
+                },
+                remove_activeClassName = function remove_activeClassName(data){
+                  $(data.items.old[0]).removeClass('active');
+                },
+                onCreate = function onCreate(data){
+                  if ( is_articlesContainer ) {
+                    set_containerHeight(data);
+                  }
+                  set_activeClassName(data);
+                },
+                onBefore = function onBefore(data){
+                  if ( is_articlesContainer ) {
+                    set_containerHeight(data);
+                  }
+                  remove_activeClassName(data);
+                },
+                onAfter = function onAfter(data){
+                  set_activeClassName(data);
+                },
+                options = {
+                  circular: true,
+                  infinite: true,
+                  responsive: true,
+                  swipe: true,
+                  onCreate: onCreate,
+                  scroll: {
+                    easing: 'swing',
+                    fx: is_articlesContainer ? 'scroll' : 'crossfade',
+                    duration: scrollDuration,
+                    pauseOnHover: true,
+                    onBefore: onBefore,
+                    onAfter: onAfter
+                  },
+                  auto: {
+                    play: is_articlesContainer ? false : true,
+                    duration: scrollDuration,
+                    timoutDuration: 5
+                  },
+                  pagination: {
+                    container: '.slider-nav',
+                    keys: true,
+                    anchorBuilder: function anchorBuilder(index){
+                      return '<li><a href="#"><span>' + index + '</span></a></li>';
+                    }
+                  },
+                  prev: {
+                    button: function(){
+                      var $prev = $('<a class="prev">Zur&uuml;ck</a>');
+
+                      $prev.appendTo($navigation);
+                      return $prev;
+                    }
+                  },
+                  next: {
+                    button: function(){
+                      var $next = $('<a class="next">Vor</a>');
+
+                      $next.appendTo($navigation);
+                      return $next;
+                    }
+                  }
+                };
+
+            if ( !is_articlesContainer ) {
+              $.extend(true, options, {
+                items: {
+                  visible: 1,
+                  width: "1500",
+                  height: "33%",
+                },
+
+              });
+            }
+
+            // Slider Javascript Powered
+            $navigation.appendTo($container);
+            $carousel.carouFredSel(options);
+          })();
+        }
+      },
+      setup: function setup(){
+        var isSetup = sandboxTheme.info.is_front_page || sandboxTheme.info.is_home;
+        
+        return isSetup;
+      }
+    }
+  };
+  
+  /**
+   * Support for JSON API Plugin
+   * ===========================
+   * @see https://wordpress.org/plugins/json-api/
+   
+  var siteData = $.getJSON(window.location.href + '?json=1');
+  
+  siteData.done(function(pageData){
+    sandboxTheme.init(pageData);
   });
+   */
+  
+  sandboxTheme.init(sandboxTheme_data);
+    
+})(jQuery, Modernizr);
 
-})(jQuery, netzgestaltung);
+
+
