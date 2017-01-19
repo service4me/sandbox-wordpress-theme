@@ -11,10 +11,12 @@
            * Resize all features
            */
           for ( featureName in sandboxTheme.features ) {
-            if ( sandboxTheme.info['feature-' + featureName] ) {
-              feature = sandboxTheme.features[featureName];
+            if ( sandboxTheme.features.hasOwnProperty(featureName) ) {
+              if ( sandboxTheme.info['feature-' + featureName] ) {
+                feature = sandboxTheme.features[featureName];
 
-              feature.resize();
+                feature.resize();
+              }
             }
           }
         },
@@ -26,10 +28,12 @@
            * Ready all features
            */
           for ( featureName in sandboxTheme.features ) {
-            if ( sandboxTheme.info['feature-' + featureName] ) {
-              feature = sandboxTheme.features[featureName];
+            if ( sandboxTheme.features.hasOwnProperty(featureName) ) {
+              if ( sandboxTheme.info['feature-' + featureName] ) {
+                feature = sandboxTheme.features[featureName];
 
-              feature.ready();
+                feature.ready();
+              }
             }
           }
         },
@@ -46,20 +50,24 @@
           
           if ( $.isPlainObject(data) ) {
             for ( dataName in data ) {
-              dataValue = dataName === 'id' ? parseInt(data[dataName]) : data[dataName];
-              
-              if ( dataName !== 'info') {
-                sandboxTheme.page[dataName] = dataValue;
+              if ( data.hasOwnProperty(dataName) ) {
+                dataValue = dataName === 'id' ? parseInt(data[dataName]) : data[dataName];
+                
+                if ( dataName !== 'info') {
+                  sandboxTheme.page[dataName] = dataValue;
+                }
               }
             }
             if ( data.hasOwnProperty('info') ) {
               for ( dataName in data.info ) {
-                sandboxTheme.info[dataName] = data.info[dataName];
+                if ( data.info.hasOwnProperty(dataName) ) {
+                  sandboxTheme.info[dataName] = data.info[dataName];
+                }
               }
             }
           }
           
-          // $.log(data.info);
+          $.log(data.info);
           
           /**
            * Loop through all features to set all neccessary data
@@ -67,24 +75,26 @@
            * After all their .ready() function will be executet and the nxr.info object gets updated.
            */
           for ( featureName in sandboxTheme.features ) {
-            feature = sandboxTheme.features[featureName];
-          
-            /**
-             * Make a copy of merged page feature options and feature options
-             * jQuery.extend() will take care for a boolean value of options.page.features[featureName]
-             */
-            featureOptions = $.extend(true, {}, feature.options || {});
+            if ( sandboxTheme.features.hasOwnProperty(featureName) ) {
+              feature = sandboxTheme.features[featureName];
+            
+              /**
+               * Make a copy of merged page feature options and feature options
+               * jQuery.extend() will take care for a boolean value of options.page.features[featureName]
+               */
+              featureOptions = $.extend(true, {}, feature.options || {});
 
-            /**
-             * Merge the feature with common feature functions, options and info
-             */
-            $.extend(true, feature, {
-              options: featureOptions,
-              info: {
-                name: featureName
-              }
-            });
-            sandboxTheme.info['feature-' + featureName] = Boolean(feature.setup());
+              /**
+               * Merge the feature with common feature functions, options and info
+               */
+              $.extend(true, feature, {
+                options: featureOptions,
+                info: {
+                  name: featureName
+                }
+              });
+              sandboxTheme.info['feature-' + featureName] = Boolean(feature.setup());
+            }
           }
           
           /**
@@ -535,6 +545,5 @@
   sandboxTheme.init(sandboxTheme_data);
     
 })(jQuery, Modernizr);
-
 
 
